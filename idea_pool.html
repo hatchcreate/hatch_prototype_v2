@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Idea Pool - Hatch!</title>
+ 
+    <style>
+    /* Base styling */
+    * {
+        box-sizing: border-box;
+        }
+
+        body {
+            font-family: Trebuchet MS;
+            margin: 0;
+            padding: 0;
+            background-color: LemonChiffon;
+            overflow-y: auto;
+        }
+
+        header {
+            background-color: #154c79;
+            color: ivory;
+            padding: 10px 20px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            position: relative;
+        }
+
+        header img {
+            height: 120px;
+            width: auto;
+        }
+
+        .header-title {
+            flex-grow: 1;
+            font-size: 50px;
+            font-weight: bold;
+            margin: 0 auto;
+            text-align: center;
+            letter-spacing: 5px;
+        }
+
+        nav {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            padding: 10px 0;
+        }
+
+        nav a {
+            margin: 0 15px;
+            color: #6F8FAF;
+            text-decoration: none;
+            font-weight: bold;
+            white-space: nowrap;
+            transition: color 0.3s, border-bottom 0.3s;
+        }
+        
+        nav a:hover {
+            color: #154c79;
+            border-bottom: 2px solid #154c79;
+        }
+
+        @media (max-width: 768px) {
+            nav a {
+                margin: 0 10px;
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 500px) {
+            nav a {
+                margin: 0 5px;
+                font-size: 12px;
+            }
+        }
+
+        .account {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            margin-left: auto;
+        }
+
+        .account img {
+            height: 50px;
+            width: 50px;
+            border-radius: 50%;
+        }
+
+        .dropdown {
+            display: none;
+            position: absolute;
+            top: 60px;
+            right: 0;
+            background-color: linen;
+            min-width: 200px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            border-radius: 5px;
+        }
+
+        .dropdown a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown a:hover {
+            background-color: #ddd;
+        }
+
+        .account:hover .dropdown {
+            display: block;
+        }
+        
+        .hero {
+            background-color: #254f6d;
+            font-family: Trebuchet MS;
+            color: #f5f5e8;
+            padding: 60px 20px;
+            text-align: center;
+            width: 100%;
+            position: relative;
+        }
+        
+        .hero h1{
+          font-size:36px;
+          margin-bottom: 30px;
+          font-weight: bold;
+          text-shadow: 2px 2px 0px rgba(150,150,150,0.5);
+          font-family: Trebuchet MS;
+          letter-spacing: 5px;
+        }
+        
+        .hero p{
+            font-size:20px;
+            font-weight: 400;
+            margin-bottom: 52px;
+            letter-spacing: 1.7px;
+        }
+        
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+    /* Idea Pool Styling */
+    .idea-pool-section {
+        padding: 50px 20px;
+        text-align: center;
+    }
+
+    .idea-pool-section h2 {
+        font-size: 30px;
+        color: #154c79;
+        margin-bottom: 40px;
+        letter-spacing: 2px;
+    }
+
+    .category-buttons {
+        margin-bottom: 20px;
+    }
+
+    .category-buttons button {
+        background-color: #e5e4e2;
+        color: #333;
+        border: none;
+        border-radius: 20px;
+        padding: 15px 20px;
+        margin: 18px;
+        cursor: pointer;
+        font-size: 15px;
+        font-weight: bold;
+        transition: background-color 0.3s;
+    }
+
+    .category-buttons button:hover {
+        background-color: #c0c0c0;
+        color: white;
+    }
+
+    .ideas-grid {
+        display: grid;
+        flex-wrap: wrap;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+
+    .idea-card {
+        background-color: #a3bed8;
+        border-radius: 15px;
+        padding: 20px;
+        text-align: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        position: relative;
+        transition: transform 0.3s, background-color 0.3s;
+        color: #f3e1b9;
+        font-size: 1.1rem;
+        cursor: pointer;
+        display: block;
+    }
+
+    .idea-card:hover {
+        background-color: #1e5a8b;
+        transform: scale(1.05);
+        color: #fff;
+    }
+
+    .idea-card h3 {
+        font-size: 22px;
+        margin-bottom: 10px;
+    }
+
+    .designer-info {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom:10px;
+        font-size: 16px;
+        margin-top: 5px;
+    }
+
+    .designer-profile-pic {
+    border-radius: 50%; /* Ensure the profile picture is circular */
+    margin-right: 10px; /* Space between the picture and name */
+    margin-top: 5px;
+    }
+
+    .idea-description {
+    margin-top: 15px; /* Space above the description */
+    text-align: center; /* Center align the description */
+    }
+
+    .contact-button {
+        background-color: #FFFDAB9;
+        color: #1f4c79;
+        margin-top: 16px;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 18px;
+        font-size: 15px;
+        letter-spacing: 1px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color: 0.3s, box-shadow: 0.3s;
+        display: inline-block;
+        width: fit-content;
+        box-sizing: border-box;
+        position: relative;
+        vertical-align: middle;
+    }
+    
+    
+    .button-container {
+    display: flex; /* Flexbox Layout */
+    justify-content: center; /* Horizontally Center the Button */
+    align-items: center; /* Vertically Center the Button */
+    height: auto; /* Adjust Height Automatically */
+    position: relative; /* Stabilize Internal Content */
+    }
+
+    
+    .contact-button:hover{
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        text-decoration: none;
+    }
+
+    .idea-card:hover .contact-button {
+        display: block;
+    }
+    
+    /* Modal Overlay */
+   .modal-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        animation: fadeIn 0.3s ease-out;
+    }
+
+        .modal-content {
+            background: #fff;
+            padding: 20px;
+            width: 85%;
+            max-height: 80vh;
+            overflow-y: auto;
+            border-radius: 15px;
+            text-align: center;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            animation: slideUp 0.4s ease-out;
+        }
+        
+        .modal-close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 24px;
+            color: #333;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        
+        .modal-close-btn:hover {
+    color: #ff5c8d;
+}
+
+    /* Modal Title */
+    .modal-title {
+        font-size: 1.8rem;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 20px;
+    }
+    
+    /* Form Styling */
+    .modal-form .form-group {
+        margin-bottom: 20px;
+        text-align: left;
+    }
+    
+    .modal-form label {
+        display: block;
+        font-size: 1.1rem;
+        font-weight: 500;
+        margin-bottom: 5px;
+        color: #555;
+    }
+    
+    .modal-form input,
+    .modal-form select,
+    .modal-form textarea {
+        width: 100%;
+        padding: 12px;
+        font-size: 1rem;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+        outline: none;
+        transition: border-color 0.3s;
+    }
+    
+    .modal-form input:focus,
+    .modal-form select:focus,
+    .modal-form textarea:focus {
+        border-color: #1f4c79; /* Your brand color */
+    }
+    
+    .modal-submit-btn {
+        background: #F0D8A8; /* Your brand color */
+        color: #1f4c79;
+        font-size: 1rem;
+        font-weight: bold;
+        padding: 15px;
+        border-radius: 30px;
+        border: none;
+        cursor: pointer;
+        transition: background 0.3s;
+        margin-top: 15px;
+    }
+    
+    .modal-submit-btn:hover {
+        background-color: #F5E6C6;
+        transform: scale(1.02);
+    }
+        
+        .add-idea-btn {
+            background-color: #F0D8A8; /* Soft Gold */
+            color: #1f4c79; 
+            letter-spacing: 1.5px;
+            font-size: 16px;
+            padding: 15px 30px; /* Bigger button */
+            border: 2px solid #1e5a8b; /* Add a border */
+            border-radius: 30px; /* Slightly more rounded */
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        
+        .add-idea-btn:hover {
+            background-color: #F5E6C6; /* Warm Beige with gold Undertone */
+            transform: scale(1.05); /* Slightly larger on hover */
+        }
+
+        /* Hover effects */
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        background-color: #f9f9f9;
+    }
+    
+    .form-group input:hover,
+    .form-group select:hover,
+    .form-group textarea:hover {
+        background-color: #f2f2f2;
+    }
+    
+    /* Animations */
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+    
+    @keyframes slideUp {
+        from {
+            transform: translateY(50px);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    @media (max-width: 600px) {
+    .modal-content {
+        width: 95%;
+    }
+}
+
+    /* Popup Modal Styles */
+        .popup-modal {
+            display: none; /* Hidden by default */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7); /* Overlay */
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: opacity 0.3s ease;
+        }
+        
+        .popup-content {
+            background-color: #fff;
+            padding: 30px;
+            max-width: 1500px;
+            max-height: 90%;
+            width: 90%;
+            height: auto;
+            display: flex;
+            flex-direction: row;
+            text-align: left;
+            border-radius: 15px;
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow-y: auto;
+        }
+        
+        .popup-close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 30px;
+            cursor: pointer;
+        }
+        
+        .popup-close-btn:hover {
+            color: red;
+        }
+        
+        
+        
+        #popup-title {
+            font-size: 30px;
+            margin-bottom: 10px;
+            max-width: 400px;
+            word-break: break-word;
+        }
+        
+        #popup-description {
+            font-size: 18px;
+            margin-top: 10px;
+            margin-bottom: 20px;
+            max-width: 400px;
+        }
+        
+        .designer-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+            
+        }
+        
+        /* Image inside the popup */
+        .popup-image {
+            max-width: 60%;
+            height: auto;
+            border-radius: 10px;
+            flex-basis: 66%; /* Takes 2/3 of the space */
+            margin-right: 20px;  /* Space between image and info */
+        }
+        
+        .popup-content:before {
+            content: '';
+            display: inline-block;
+            width: 1.5px;
+            height: 100%;
+            background-color: #ddd;  /* Light gray color for the line */
+            margin-right: 20px;  /* Space between the line and the text */
+        }
+
+        
+        .designer-profile-pic {
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            margin-bottom: 10px;
+        }
+        
+        #popup-contact-btn {
+            background: #F0D8A8; /* Your brand color */
+            color: #1f4c79;
+            font-size: 1rem;
+            font-weight: bold;
+            padding: 15px;
+            border-radius: 30px;
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 15px;
+        }
+        
+        #popup-contact-btn:hover {
+            background-color: #F5E6C6;
+            transform: scale(1.02);
+        }
+
+        
+        .collaborate-button {
+            background: #F0D8A8; /* Your brand color */
+            color: #1f4c79;
+            font-size: 1rem;
+            font-weight: bold;
+            padding: 15px;
+            border-radius: 30px;
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 15px;
+        }
+        
+        .collaborate-button:hover {
+            background-color: #F5E6C6;
+            transform: scale(1.02);
+        }
+
+        
+        .popup-info {
+            display: flex;
+            flex-direction: column; /* Stack vertically */
+            justify-content: flex-start; /* Align items to the start */
+            max-width: 500px; /* Ensure the info doesn't stretch too wide */
+        }
+        
+        /* Vertical Separator */
+        .popup-content .separator {
+            width: 3px; /* Thin vertical line */
+            height: auto; /* Matches content height */
+            background-color: #ddd; /* Light gray color */
+            margin: 0 30px; /* Space between image and info */
+        }
+        
+
+    </style>
+
+</head>
+<body class="page-idea-pool">
+
+    <!-- Header with website title and navigation -->
+    <header>
+        <img src="https://assets.onecompiler.app/42s266nnn/42s266wy4/Hatch!%20Logo%20(background%20removed).png" alt="Hatch! Logo">
+        <h1 class="header-title">
+            <a href="index.html" style="color: inherit; text-decoration: none;">Hatch!</a>
+        </h1>
+        <div class="account">
+            <a href="signup_login.html">
+                <img src="https://via.placeholder.com/50" alt="My account">
+            </a>
+            <div class="dropdown">
+                <a href="signup_login.html">Signup/Login</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation bar -->
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="idea_pool.html">Idea Pool</a>
+        <a href="find_designers.html">Find Designers</a>
+        <a href="">#From Hatch! to Quack</a>
+        <a href="community.html">Community</a>
+        <a href="guide.html">Guide and Support</a>
+    </nav>
+
+    <!-- Main Hero Section -->
+    <div class="hero">
+        <h1>Idea Pool</h1>
+        <p>From sketch to hatch, we'll walk through it together!</p>
+        <button class="add-idea-btn" onclick="openModal()">Submit Your Idea!</button>
+    </div>
+    
+    <!-- Idea Pool Section -->
+<section class="idea-pool-section">
+    <h2>Current Ideas</h2>
+     <div class="category-buttons">
+        <button class="category-btn" data-category="all">All</button>
+        <button class="category-btn" data-category="home-goods">Home Goods</button>
+        <button class="category-btn" data-category="stationery">Stationery</button>
+        <button class="category-btn" data-category="travel-products">Travel Products</button>
+    </div>
+    
+    <div class="ideas-grid">
+        <!-- Idea Card 1 -->
+            <div class="idea-card idea-item home-goods">
+                <h3>Design Name</h3>
+                <img src="image1_thumb.jpg" alt="Design Image" style="width: 100%; height: auto;">
+                <div class="designer-info">
+                    <img class="designer-profile-pic" src="profile.jpg" alt="Designer Profile">
+                    <span>Designer Name</span>
+                </div>
+                <div class="idea-description">short intro</div>
+            <div class="button-container">
+                <a href="messages.html">
+                <button class="contact-button">Contact</button>
+                </a>
+            </div>
+            </div>
+        <!-- Idea Card 2 -->
+            <div class="idea-card idea-item stationery">
+                <h3>Design Name</h3>
+                <img src="image2_thumb.jpg" alt="Design Image" style="width: 100%; height: auto;">
+                <div class="designer-info">
+                    <img class="designer-profile-pic" src="profile.jpg" alt="Designer Profile">
+                    <span>Designer Name</span>
+                </div>
+                <div class="idea-description">short intro</div>
+                <div class="button-container">
+                    <a href="messages.html">
+                    <button class="contact-button">Contact</button>
+                    </a>
+                </div>
+            </div>
+        <!-- Idea Card 3 -->
+            <div class="idea-card idea-item travel-products">
+                <h3>Design Name</h3>
+                <img src="image3_thumb.jpg" alt="Design Image" style="width: 100%; height: auto;">
+                <div class="designer-info">
+                    <img class="designer-profile-pic" src="profile.jpg" alt="Designer Profile">
+                    <span>Designer Name</span>
+                </div>
+                <div class="idea-description">short intro</div>
+                <div class="button-container">
+                    <a href="messages.html">
+                    <button class="contact-button">Contact</button>
+                    </a>
+                </div>
+             </div>
+        <!-- Additional Idea Cards -->
+            <div class="idea-card idea-item home-goods">
+                <h3>Design Name</h3>
+                <img src="image4_thumb.jpg" alt="Design Image" style="width: 100%; height: auto;">
+                <div class="designer-info">
+                    <img class="designer-profile-pic" src="profile.jpg" alt="Designer Profile">
+                    <span>Designer Name</span>
+                </div>
+                <div class="idea-description">short intro</div>
+                <div class="button-container">
+                <a href="messages.html">
+                <button class="contact-button">Contact</button>
+                </a>
+                </div>
+            </div>
+        
+            <div class="idea-card idea-item stationery">
+                <h3>Design Name</h3>
+                <img src="image5_thumb.jpg" alt="Design Image" style="width: 100%; height: auto;">
+                <div class="designer-info">
+                    <img class="designer-profile-pic" src="profile.jpg" alt="Designer Profile">
+                    <span>Designer Name</span>
+                </div>
+                <div class="idea-description">short intro</div>
+                <div class="button-container">
+                <a href="messages.html">
+                <button class="contact-button">Contact</button>
+                </a>
+                </div>
+            </div>
+            
+            <div class="idea-card idea-item travel-products">
+                <h3>Design Name</h3>
+                <img src="image6_thumb.jpg" alt="Design Image" style="width: 100%; height: auto;">
+                <div class="designer-info">
+                    <img class="designer-profile-pic" src="profile.jpg" alt="Designer Profile">
+                    <span>Designer Name</span>
+                </div>
+                <div class="idea-description">short intro</div>
+                <div class="button-container">
+                <a href="messages.html">
+                <button class="contact-button">Contact</button>
+                </a>
+                </div>
+            </div>
+        
+            <div class="idea-card idea-item home-goods">
+                <h3>Design Name</h3>
+                <img src="image7_thumb.jpg" alt="Design Image" style="width: 100%; height: auto;">
+                <div class="designer-info">
+                    <img class="designer-profile-pic" src="profile.jpg" alt="Designer Profile">
+                    <span>Designer Name</span>
+                </div>
+                <div class="idea-description">short intro</div>
+                <div class="button-container">
+                <a href="messages.html">
+                <button class="contact-button">Contact</button>
+                </a>
+                </div>
+            </div>
+        
+             <div class="idea-card idea-item stationery">
+                <h3>Design Name</h3>
+                <img src="image8_thumb.jpg" alt="Design Image" style="width: 100%; height: auto;">
+                <div class="designer-info">
+                    <img class="designer-profile-pic" src="profile.jpg" alt="Designer Profile">
+                    <span>Designer Name</span>
+                </div>
+                <div class="idea-description">short intro</div>
+                <div class="button-container">
+                <a href="messages.html">
+                <button class="contact-button">Contact</button>
+                </a>
+                </div>
+            </div>
+        
+            <div class="idea-card idea-item travel-products">
+                <h3>Design Name</h3>
+                <img src="image9_thumb.jpg" alt="Design Image" style="width: 100%; height: auto;">
+                <div class="designer-info">
+                    <img class="designer-profile-pic" src="profile.jpg" alt="Designer Profile">
+                    <span>Designer Name</span>
+                </div>
+                <div class="idea-description">short intro</div>
+                <div class="button-container">
+                <a href="messages.html">
+                <button class="contact-button">Contact</button>
+                </a>
+                </div>
+            </div>
+            
+            <!-- Modal (Popup) Structure -->
+            <div class="popup-modal" id="popup-modal">
+                <div class="popup-content">
+                    <span class="popup-close-btn" id="close-popup-btn">&times;</span>
+                    <h2 id="popup-title">Design Title</h2>
+                    <img id="popup-image" src="" alt="Design Image" style="width: 100%; height: auto;">
+                    
+                    <div class="separator"></div>
+                    
+                    <div class="popup-info">
+                    <p id="popup-description">Design description goes here.</p>
+                    <div class="designer-info">
+                        <img id="popup-designer-pic" src="" alt="Designer Profile" class="designer-profile-pic">
+                        <span id="popup-designer-name">Designer Name</span>
+                    </div>
+                    <a href="messages.html">
+                    <button id="popup-contact-btn" class="contact-button">Contact</button>
+                    </a>
+                    <button id="popup-collaborate-btn" class="collaborate-button">Collab!</button>
+                </div>
+            </div>
+        </div>
+    </div>
+        
+
+    </section>
+    
+    <!-- Modal Overlay -->
+<div class="modal-overlay" id="modal-overlay">
+    <div class="modal-content">
+        <span class="modal-close-btn" id="close-modal-btn">&times;</span>
+        <h2 class="modal-title">Submit Your Idea</h2>
+        <form id="submit-idea-form" class="modal-form">
+            <div class="form-group">
+                <label for="idea-title">Title</label>
+                <input type="text" id="idea-title" placeholder="Enter your idea title" required>
+            </div>
+            <div class="form-group">
+                <label for="idea-category">Category</label>
+                <select id="idea-category" required>
+                    <option value="">Select Category</option>
+                    <option value="home-goods">Home Goods</option>
+                    <option value="stationery">Stationery</option>
+                    <option value="travel-products">Travel Products</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="idea-image">Upload Image</label>
+                <input type="file" id="idea-image" placeholder="Upload images of your idea" required>
+            </div>
+        
+            <div class="form-group">
+                <label for="idea-description">Description</label>
+                <textarea id="idea-description" placeholder="Write a short description" required></textarea>
+            </div>
+            <button type="submit" class="modal-submit-btn">Submit</button>
+        </form>
+    </div>
+</div>
+
+
+    <script>
+    
+        document.querySelectorAll('.category-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                let category = this.dataset.category; // Get the category from the button's data attribute
+                filterIdeasByCategory(category);
+            });
+        });
+        
+        // Filter function to show/hide cards based on category
+        function filterIdeasByCategory(category) {
+            const allCards = document.querySelectorAll('.idea-card');
+            
+            allCards.forEach(card => {
+                if (card.classList.contains(category) || category === 'all') {
+                    card.style.display = 'block'; // Show matching category cards
+                } else {
+                    card.style.display = 'none'; // Hide non-matching category cards
+                }
+            });
+        }
+        
+        // Assuming the page is initially loaded with the "home-goods" category active
+        window.addEventListener('DOMContentLoaded', (event) => {
+            filterIdeasByCategory('all'); // Default filter category
+        });
+        
+
+                
+                // References
+        const modalOverlay = document.getElementById("modal-overlay");
+        const closeModalBtn = document.getElementById("close-modal-btn");
+        const submitIdeaForm = document.getElementById("submit-idea-form");
+        const ideasGrid = document.querySelector(".ideas-grid");
+        
+        
+        // Open Modal
+        function openModal() {
+            modalOverlay.style.display = "flex";
+        }
+        
+        // Close Modal
+        function closeModal() {
+            modalOverlay.style.display = "none";
+        }
+        
+        // Generate Idea Cards
+        function generateIdeaCards() {
+    const ideaContainer = document.querySelector(".idea-container"); // where you want to display cards
+    ideaContainer.innerHTML = ""; // Clear existing cards
+
+    ideas.forEach(idea => {
+        // Check for category (if you have category-based filtering)
+        if (selectedCategory === idea.category || selectedCategory === "all") {
+            const card = document.createElement("div");
+            card.classList.add("idea-card");
+            card.innerHTML = `
+                <img src="${idea.image}" alt="${idea.title}">
+                <h3>${idea.title}</h3>
+                <p>${idea.description}</p>
+                <div class="designer">
+                    <img src="${idea.profilePic}" alt="${idea.designer}" class="profile-pic">
+                    <span>${idea.designer}</span>
+                </div>
+            `;
+            ideaContainer.appendChild(card);
+        }
+    });
+}
+
+        
+        // Handle Form Submission
+        submitIdeaForm.addEventListener("submit", function (event) {
+            event.preventDefault(); // Prevent form refresh
+        
+            // Collect form data
+            const newIdea = {
+                title: document.getElementById("idea-title").value,
+                category: document.getElementById("idea-category").value,
+                image: document.getElementById("idea-image").value,
+                description: document.getElementById("idea-description").value,
+            };
+        
+            // Add new idea to array and re-render cards
+            ideas.push(newIdea);
+            generateIdeaCards();
+        
+            // Close modal and reset form
+            closeModal();
+            submitIdeaForm.reset();
+        });
+        
+        // Close modal on overlay click or button click
+        closeModalBtn.addEventListener("click", closeModal);
+        modalOverlay.addEventListener("click", (e) => {
+            if (e.target === modalOverlay) closeModal();
+        });
+        
+        // Get popup and close button elements
+        const popupModal = document.getElementById("popup-modal");
+        const closePopupBtn = document.getElementById("close-popup-btn");
+        
+        // Get all the idea cards
+        const ideaCards = document.querySelectorAll('.idea-card');
+        
+        // Function to open the popup with respective design details
+        function openPopup(title, image, description, designerName, designerPic) {
+            document.getElementById("popup-title").innerText = title;
+            document.getElementById("popup-image").src = image;
+            document.getElementById("popup-description").innerText = description;
+            document.getElementById("popup-designer-pic").src = designerPic;
+        
+            popupModal.style.display = "flex"; // Show the popup
+        }
+        
+        ideaCards.forEach(card => {
+            card.addEventListener('click', function() {
+                const title = this.querySelector('h3').innerText;
+                const image = this.querySelector('img').src;
+                const description = this.querySelector('.idea-description').innerText;
+                const designerName = this.querySelector('.designer-info span').innerText;
+                const designerPic = this.querySelector('.designer-info img').src;
+        
+                openPopup(title, image, description, designerName, designerPic);
+            });
+        });
+
+
+        
+        // Close the popup when the close button is clicked
+        closePopupBtn.addEventListener('click', function() {
+            popupModal.style.display = 'none'; // Hide the popup
+        });
+        
+        // Close the popup when clicking outside of the modal content
+        popupModal.addEventListener('click', function(e) {
+            if (e.target === popupModal) {
+                popupModal.style.display = 'none';
+            }
+        });
+
+        
+        
+        
+        
+        
+        
+        // Initialize
+        generateIdeaCards();
+        initializeCategoryFilter();
+        
+
+        
+        </script>
+        
+    <!-- Footer -->
+    <footer>
+        <p>Hatch! &copy; 2025 | All rights reserved</p>
+    </footer>
+    
+    
+</body>
+</html>
